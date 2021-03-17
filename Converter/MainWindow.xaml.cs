@@ -20,26 +20,35 @@ namespace Converter
     /// </summary>
     public partial class MainWindow : Window
     {
+        ConverterDataBase DataConvert = new ConverterDataBase();
+
         public MainWindow()
         {
             InitializeComponent();
         }
+
         private void GiveResult(object sender, RoutedEventArgs e)
         {
             string text = FromValue.Text;
-            int fromNum = 0;
+            double fromNum;
             if (text != "")
             {
                 try
                 {
-                    fromNum = Int32.Parse(FromValue.Text);
-                    ToValue.Text = $"Число: {fromNum}";
+                    fromNum = Double.Parse(FromValue.Text);
+                    ToValue.Text = $"{CountResult(fromNum, FromValueType.Text, ToValueType.Text)}";
                 }
                 catch
                 {
-                    MessageBox.Show("Введено некорректное число");
+                    ToValue.Text = ("Введено некорректное число");
                 }
             }
+
+        }
+        private double CountResult(double num, string fromType, string toType)
+        {
+            double res = num / DataConvert.fromMetresTo[fromType] * DataConvert.fromMetresTo[toType];
+            return res;
         }
     }
 }
